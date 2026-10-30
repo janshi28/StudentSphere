@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>StudentSphere</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap">
+<style>
+:root {
+  --bg: #f5f6fa;
+  --surface: #ffffff;
+  --border: #e2e5ee;
+  --fg: #1a1d2e;
+  --fg-muted: #5c6070;
+  --fg-subtle: #9098b0;
+  --accent: #4361ee;
+  --accent-soft: #eef1fd;
+  --accent-hover: #3451d1;
+  --success: #22c55e;
+  --success-soft: #f0fdf4;
+  --warning: #f59e0b;
+  --warning-soft: #fffbeb;
+  --danger: #ef4444;
+  --danger-soft: #fef2f2;
+  --info: #3b82f6;
+  --info-soft: #eff6ff;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 1px 3px rgba(0,0,0,.06), 0 4px 12px rgba(0,0,0,.04);
+  --shadow-lg: 0 4px 16px rgba(0,0,0,.1);
+  color-scheme: light;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--fg); font-size: 14px; line-height: 1.5; }
+
+/* AUTH */
+.auth-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-lg); padding: 40px 36px; width: 100%; max-width: 420px; }
+.auth-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; }
+.auth-logo-icon { width: 36px; height: 36px; background: var(--accent); border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff; }
+.auth-logo-name { font-family: 'DM Sans', sans-serif; font-size: 20px; font-weight: 600; color: var(--fg); }
+.auth-title { font-size: 22px; font-weight: 700; color: var(--fg); margin-bottom: 4px; }
+.auth-subtitle { font-size: 13px; color: var(--fg-muted); margin-bottom: 28px; }
+.form-group { margin-bottom: 16px; }
+.form-label { display: block; font-size: 12px; font-weight: 600; color: var(--fg-muted); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 6px; }
+.form-input { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); color: var(--fg); font-size: 14px; transition: border-color .15s; outline: none; }
+.form-input:focus { border-color: var(--accent); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 18px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; cursor: pointer; border: none; outline: none; transition: all .15s; }
+.btn-primary { background: var(--accent); color: #fff; width: 100%; padding: 12px; }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-secondary { background: var(--accent-soft); color: var(--accent); border: 1.5px solid var(--accent); }
+.btn-ghost { background: transparent; color: var(--fg-muted); border: 1.5px solid var(--border); }
+.btn-ghost:hover { background: var(--bg); color: var(--fg); }
+.btn-sm { padding: 7px 14px; font-size: 13px; }
+.auth-switch { margin-top: 20px; text-align: center; font-size: 13px; color: var(--fg-muted); }
+.auth-switch a { color: var(--accent); cursor: pointer; text-decoration: none; font-weight: 600; }
+.msg { padding: 10px 14px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; margin-bottom: 14px; }
+.msg-error { background: var(--danger-soft); color: var(--danger); }
+.msg-success { background: var(--success-soft); color: #16a34a; }
+.msg-info { background: var(--info-soft); color: var(--info); }
+
+/* PAGE SYSTEM */
+.page { display: none; }
+.page.active { display: block; }
+
+/* APP SHELL */
+.app-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow); }
+.app-header-left { display: flex; align-items: center; gap: 10px; }
+.header-logo-icon { width: 30px; height: 30px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 15px; color: #fff; }
+.header-logo-name { font-family: 'DM Sans', sans-serif; font-size: 17px; font-weight: 600; color: var(--fg); }
+.header-user { display: flex; align-items: center; gap: 10px; }
+.header-user-name { font-size: 13px; font-weight: 500; color: var(--fg-muted); }
+.avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+.tab-bar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; gap: 4px; overflow-x: auto; }
+.tab-btn { padding: 14px 18px 12px; font-size: 13px; font-weight: 500; color: var(--fg-muted); cursor: pointer; border: none; background: none; outline: none; border-bottom: 2.5px solid transparent; white-space: nowrap; transition: color .15s, border-color .15s; }
+.tab-btn:hover { color: var(--fg); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+.main-content { flex: 1; overflow-y: auto; padding: 24px; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* CARDS */
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 24px; margin-bottom: 20px; }
+.card-title { font-size: 15px; font-weight: 700; color: var(--fg); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+
+/* PROFILE GRID */
+.profile-grid { display: grid; grid-template-columns: 280px 1fr; gap: 20px; align-items: start; }
+@media (max-width: 700px) { .profile-grid { grid-template-columns: 1fr; } .auth-card { padding: 28px 20px; } .main-content { padding: 16px; } }
+
+/* CAREER SCORE RING */
+.career-score-wrap { display: flex; flex-direction: column; align-items: center; padding: 8px 0 16px; }
+.ring-container { position: relative; width: 140px; height: 140px; }
+.ring-svg { transform: rotate(-90deg); overflow: visible; }
+.ring-track { fill: none; stroke: var(--border); stroke-width: 12; }
+.ring-fill { fill: none; stroke-width: 12; stroke-linecap: round; transition: stroke-dashoffset .8s cubic-bezier(.4,0,.2,1), stroke .4s; }
+.ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.ring-score-num { font-size: 32px; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
+.ring-score-label { font-size: 11px; font-weight: 600; color: var(--fg-muted); text-transform: uppercase; letter-spacing: .06em; margin-top: 2px; }
+
+/* ACADEMIC BADGE */
+.academic-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; }
+.badge-distinction { background: var(--success-soft); color: #16a34a; }
+.badge-merit { background: var(--info-soft); color: var(--info); }
+.badge-pass { background: var(--warning-soft); color: #b45309; }
+.badge-needs { background: var(--danger-soft); color: var(--danger); }
+
+/* COMPLETION BAR */
+.completion-bar-wrap { margin-bottom: 20px; }
+.completion-bar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.completion-bar-label { font-size: 13px; font-weight: 600; color: var(--fg); }
+.completion-bar-pct { font-size: 13px; font-weight: 700; color: var(--accent); }
+.completion-bar-track { height: 8px; border-radius: 4px; background: var(--border); overflow: hidden; }
+.completion-bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--accent), #7c3aed); transition: width .6s cubic-bezier(.4,0,.2,1); }
+
+/* STAT TILES */
+.stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+@media (max-width: 500px) { .stats-row { grid-template-columns: 1fr; } }
+.stat-tile { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 16px; text-align: center; box-shadow: var(--shadow); }
+.stat-tile-num { font-size: 28px; font-weight: 800; line-height: 1.1; font-variant-numeric: tabular-nums; color: var(--accent); }
+.stat-tile-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--fg-muted); margin-top: 4px; }
+
+/* PROFILE VIEW */
+.profile-sidebar { display: flex; flex-direction: column; gap: 16px; }
+.profile-hero { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 24px; text-align: center; }
+.profile-avatar-lg { width: 72px; height: 72px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 28px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; }
+.profile-name { font-size: 18px; font-weight: 700; color: var(--fg); margin-bottom: 2px; }
+.profile-major { font-size: 13px; color: var(--fg-muted); margin-bottom: 12px; }
+.profile-gpa-row { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 14px; }
+.gpa-num { font-size: 20px; font-weight: 800; color: var(--fg); }
+.gpa-label { font-size: 11px; color: var(--fg-muted); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+.profile-links { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+.profile-link-btn { padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; text-decoration: none; cursor: pointer; border: 1.5px solid var(--border); color: var(--fg-muted); background: var(--bg); transition: all .15s; display: inline-flex; align-items: center; gap: 4px; }
+.profile-link-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* FIELD DISPLAY */
+.field-list { display: flex; flex-direction: column; gap: 0; }
+.field-row { display: grid; grid-template-columns: 150px 1fr; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.field-row:last-child { border-bottom: none; }
+.field-key { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--fg-subtle); padding-top: 1px; }
+.field-val { font-size: 14px; color: var(--fg); word-break: break-word; }
+
+/* TAGS */
+.tag-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; background: var(--accent-soft); color: var(--accent); }
+
+/* EDIT FORM */
+.edit-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 600px) { .edit-form-grid { grid-template-columns: 1fr; } }
+.full-col { grid-column: 1 / -1; }
+.edit-form-section-title { font-size: 13px; font-weight: 700; color: var(--fg-muted); text-transform: uppercase; letter-spacing: .06em; padding-bottom: 10px; border-bottom: 1px solid var(--border); margin-bottom: 4px; grid-column: 1 / -1; }
+
+/* DOWNLOAD RESUME */
+.download-resume-btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 18px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; border: 1.5px solid var(--accent); background: var(--accent-soft); color: var(--accent); transition: all .15s; text-decoration: none; }
+.download-resume-btn:hover { background: var(--accent); color: #fff; }
+
+/* RESUME OVERLAY */
+#resume-overlay { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,.7); align-items: flex-start; justify-content: center; overflow-y: auto; padding: 40px 16px; }
+#resume-overlay.open { display: flex; }
+.resume-modal { background: #fff; color: #111; border-radius: 12px; box-shadow: 0 24px 80px rgba(0,0,0,.4); width: 100%; max-width: 680px; overflow: hidden; }
+.resume-modal-controls { background: #f3f4f8; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e0e2ea; }
+.resume-modal-title { font-size: 14px; font-weight: 600; color: #333; }
+.resume-modal-btns { display: flex; gap: 8px; }
+.resume-close-btn { padding: 6px 14px; border-radius: 6px; border: 1.5px solid #d0d3df; background: #fff; color: #444; font-size: 13px; font-weight: 600; cursor: pointer; }
+.resume-print-btn { padding: 6px 14px; border-radius: 6px; border: none; background: #4361ee; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; }
+.resume-body { padding: 40px 48px; }
+.res-name { font-size: 26px; font-weight: 800; color: #111; letter-spacing: -.01em; }
+.res-contact { font-size: 13px; color: #555; margin-top: 4px; }
+.res-divider { border: none; border-top: 2px solid #4361ee; margin: 14px 0 18px; }
+.res-section-title { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: #4361ee; margin-bottom: 10px; }
+.res-section { margin-bottom: 22px; }
+.res-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+.res-label { font-size: 13px; font-weight: 700; color: #222; }
+.res-val { font-size: 13px; color: #444; }
+.res-tag-list { display: flex; flex-wrap: wrap; gap: 5px; }
+.res-tag { padding: 2px 9px; background: #eef1fd; color: #4361ee; border-radius: 12px; font-size: 12px; font-weight: 600; }
+.res-item { margin-bottom: 8px; }
+.res-item-name { font-size: 13px; font-weight: 700; color: #222; }
+
+/* EMPTY STATE / SPINNER */
+.empty-state { text-align: center; padding: 40px 20px; color: var(--fg-muted); }
+.empty-state-icon { font-size: 36px; margin-bottom: 10px; }
+.empty-state-text { font-size: 14px; }
+.spinner { display: inline-block; width: 18px; height: 18px; border: 2.5px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin .7s linear infinite; vertical-align: middle; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ADMIN */
+.admin-header { background: #1e1b4b; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,.3); }
+.admin-logo { display: flex; align-items: center; gap: 10px; font-family: 'DM Sans', sans-serif; font-size: 17px; font-weight: 700; color: #fff; }
+.admin-content { padding: 24px; }
+.admin-stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+@media (max-width: 700px) { .admin-stats-row { grid-template-columns: repeat(2, 1fr); } }
+.admin-stat-tile { background: #fff; border: 1px solid #e2e5ee; border-radius: 12px; padding: 18px 16px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+.admin-stat-tile-num { font-size: 28px; font-weight: 800; color: #4361ee; line-height: 1.1; }
+.admin-stat-tile-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: #5c6070; margin-top: 4px; }
+.admin-toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; align-items: center; }
+.admin-search { flex: 1; min-width: 200px; padding: 9px 14px; border: 1.5px solid #e2e5ee; border-radius: 8px; font-size: 14px; outline: none; background: #fff; color: #1a1d2e; }
+.admin-search:focus { border-color: #4361ee; }
+.admin-table-wrap { background: #fff; border: 1px solid #e2e5ee; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.06); overflow-x: auto; }
+.admin-table { width: 100%; border-collapse: collapse; min-width: 750px; }
+.admin-table th { background: #f5f6fa; padding: 12px 16px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #5c6070; border-bottom: 1px solid #e2e5ee; white-space: nowrap; }
+.admin-table td { padding: 12px 16px; border-bottom: 1px solid #f0f1f5; font-size: 13px; color: #1a1d2e; vertical-align: middle; }
+.admin-table tr:last-child td { border-bottom: none; }
+.admin-table tr:hover td { background: #f8f9ff; }
+.admin-action-btn { padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; border: none; margin-right: 4px; }
+.btn-edit-admin { background: #fffbeb; color: #92400e; }
+.btn-edit-admin:hover { background: #fde68a; }
+.btn-view { background: #eef1fd; color: #4361ee; }
+.btn-view:hover { background: #4361ee; color: #fff; }
+.btn-del { background: #fef2f2; color: #ef4444; }
+.btn-del:hover { background: #ef4444; color: #fff; }
+.admin-empty { padding: 40px; text-align: center; color: #5c6070; font-size: 14px; }
+
+/* ADMIN MODAL */
+#admin-modal-overlay { display: none; position: fixed; inset: 0; z-index: 2000; background: rgba(0,0,0,.6); align-items: center; justify-content: center; padding: 24px 16px; }
+#admin-modal-overlay.open { display: flex; }
+.admin-modal { background: #fff; color: #111; border-radius: 14px; box-shadow: 0 24px 80px rgba(0,0,0,.4); width: 100%; max-width: 580px; max-height: 85vh; overflow-y: auto; }
+.admin-modal-header { padding: 20px 24px 16px; border-bottom: 1px solid #e2e5ee; display: flex; justify-content: space-between; align-items: center; }
+.admin-modal-title { font-size: 16px; font-weight: 700; color: #111; }
+.admin-modal-close { background: none; border: none; font-size: 20px; cursor: pointer; color: #888; line-height: 1; }
+.admin-modal-body { padding: 24px; }
+
+.text-muted { color: var(--fg-muted); }
+.text-sm { font-size: 12px; }
+.mt-8 { margin-top: 8px; }
+</style>
+</head>
+<body>
+
+<!-- ========== SIGN IN PAGE ========== -->
+<div id="page-signin" class="page active" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 16px;background:var(--bg);">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="auth-logo-icon">🎓</div>
+      <div class="auth-logo-name">StudentSphere</div>
+    </div>
+    <div id="signin-form">
+      <div class="auth-title">Welcome back</div>
+      <div class="auth-subtitle">Sign in to your student portal</div>
+      <div id="signin-msg"></div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" id="signin-email" type="email" placeholder="you@university.edu">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input class="form-input" id="signin-password" type="password" placeholder="••••••••"
+          onkeydown="if(event.key==='Enter') signIn()">
+      </div>
+      <button class="btn btn-primary" onclick="signIn()">Sign In</button>
+      <div class="auth-switch">Don't have an account? <a onclick="showSignUp()">Sign up</a></div>
+    </div>
+
+    <div id="signup-form" style="display:none">
+      <div class="auth-title">Create account</div>
+      <div class="auth-subtitle">Join StudentSphere to track your journey</div>
+      <div id="signup-msg"></div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" id="signup-email" type="email" placeholder="you@university.edu">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input class="form-input" id="signup-password" type="password" placeholder="Min 8 characters">
+      </div>
+      <button class="btn btn-primary" onclick="signUp()">Create Account</button>
+      <div class="auth-switch">Already have an account? <a onclick="showSignIn()">Sign in</a></div>
+    </div>
+
+    <div id="confirm-form" style="display:none">
+      <div class="auth-title">Verify your email</div>
+      <div class="auth-subtitle">Enter the confirmation code we sent you</div>
+      <div id="confirm-msg"></div>
+      <div class="form-group">
+        <label class="form-label">Confirmation Code</label>
+        <input class="form-input" id="confirm-code" type="text" placeholder="123456"
+          onkeydown="if(event.key==='Enter') confirmSignUp()">
+      </div>
+      <button class="btn btn-primary" onclick="confirmSignUp()">Verify</button>
+      <div class="auth-switch"><a onclick="resendCode()">Resend code</a></div>
+    </div>
+
+    <div style="text-align:center;margin-top:16px;">
+      <a onclick="showPage('page-admin-login')" style="font-size:12px;color:var(--fg-subtle);cursor:pointer;">🛡️ Admin Access</a>
+    </div>
+  </div>
+</div>
+
+<!-- ========== ADMIN LOGIN PAGE ========== -->
+<div id="page-admin-login" class="page" style="min-height:100vh;display:none;align-items:center;justify-content:center;padding:24px 16px;background:var(--bg);">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="auth-logo-icon" style="background:#1e1b4b;">🛡️</div>
+      <div class="auth-logo-name">Admin Portal</div>
+    </div>
+    <div class="auth-title">Admin Login</div>
+    <div class="auth-subtitle">Restricted access — authorized personnel only</div>
+    <div id="admin-login-msg"></div>
+    <div class="form-group">
+      <label class="form-label">Admin Password</label>
+      <input class="form-input" id="admin-password" type="password" placeholder="••••••••"
+        onkeydown="if(event.key==='Enter') adminLogin()">
+    </div>
+    <button class="btn btn-primary" style="background:#1e1b4b;" onclick="adminLogin()">Admin Login</button>
+    <div class="auth-switch"><a onclick="showPage('page-signin')">← Back to Student Login</a></div>
+  </div>
+</div>
+
+<!-- ========== STUDENT APP ========== -->
+<div id="page-app" class="page" style="display:none;flex-direction:column;min-height:100vh;">
+  <header class="app-header">
+    <div class="app-header-left">
+      <div class="header-logo-icon">🎓</div>
+      <div class="header-logo-name">StudentSphere</div>
+    </div>
+    <div class="header-user">
+      <span class="header-user-name" id="header-username"></span>
+      <div class="avatar" id="header-avatar">?</div>
+      <button class="btn btn-ghost btn-sm" onclick="signOut()">Sign Out</button>
+    </div>
+  </header>
+
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('tab-profile')" data-tab="tab-profile">👤 My Profile</button>
+    <button class="tab-btn" onclick="switchTab('tab-edit')" data-tab="tab-edit">✏️ Edit Profile</button>
+    <button class="tab-btn" onclick="switchTab('tab-lookup')" data-tab="tab-lookup">🔍 Lookup Student</button>
+  </div>
+
+  <div class="main-content">
+
+    <!-- MY PROFILE TAB -->
+    <div id="tab-profile" class="tab-panel active">
+      <div id="profile-display">
+        <div class="card">
+          <div class="empty-state">
+            <div class="spinner"></div>
+            <div class="empty-state-text mt-8">Loading your profile…</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EDIT PROFILE TAB -->
+    <div id="tab-edit" class="tab-panel">
+      <div class="card">
+        <div class="card-title">✏️ Edit Your Profile</div>
+        <div id="edit-msg"></div>
+        <div class="edit-form-grid">
+
+          <div class="edit-form-section-title">🪪 Student Identity</div>
+          <div class="form-group">
+            <label class="form-label">SAP ID *</label>
+            <input class="form-input" id="f-sap_id" type="text" placeholder="e.g. 70572300064">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Roll Number</label>
+            <input class="form-input" id="f-roll_number" type="text" placeholder="e.g. D064">
+          </div>
+          <!-- hidden student_id mirrors sap_id -->
+          <input type="hidden" id="f-student_id">
+          <div class="form-group">
+            <label class="form-label">Full Name *</label>
+            <input class="form-input" id="f-full_name" type="text" placeholder="e.g. Kottakapu Janshi">
+          </div>
+          <div class="form-group full-col">
+            <label class="form-label">Email *</label>
+            <input class="form-input" id="f-email" type="email" placeholder="you@nmims.edu.in">
+          </div>
+
+          <div class="edit-form-section-title">🎓 Academic Details</div>
+          <div class="form-group full-col">
+            <label class="form-label">Department *</label>
+            <input class="form-input" id="f-department" type="text" placeholder="e.g. Computer Science Engineering - Data Science">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Year of Study</label>
+            <select class="form-input" id="f-year_of_study">
+              <option value="">-- Select Year --</option>
+              <option>1st Year</option>
+              <option>2nd Year</option>
+              <option>3rd Year</option>
+              <option>4th Year</option>
+              <option>Graduate</option>
+              <option>PhD</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">GPA (0.0 – 4.0)</label>
+            <input class="form-input" id="f-gpa" type="number" placeholder="e.g. 3.75" min="0" max="4" step="0.01">
+          </div>
+
+          <div class="edit-form-section-title">💼 Skills &amp; Career</div>
+          <div class="form-group full-col">
+            <label class="form-label">Technical Skills <span class="text-muted text-sm">(comma-separated)</span></label>
+            <input class="form-input" id="f-skills" type="text" placeholder="Python, AWS, React, SQL, Machine Learning">
+          </div>
+          <div class="form-group full-col">
+            <label class="form-label">Certifications</label>
+            <textarea class="form-input" id="f-certifications" rows="3" placeholder="AWS Cloud Practitioner, Google Analytics"></textarea>
+          </div>
+          <div class="form-group full-col">
+            <label class="form-label">Projects</label>
+            <textarea class="form-input" id="f-projects" rows="3" placeholder="StudentSphere Portal, ML Price Predictor"></textarea>
+          </div>
+          <div class="form-group full-col">
+            <label class="form-label">Career Goal</label>
+            <input class="form-input" id="f-career_goal" type="text" placeholder="e.g. Cloud Solutions Architect">
+          </div>
+
+          <div class="edit-form-section-title">🔗 Online Presence</div>
+          <div class="form-group">
+            <label class="form-label">LinkedIn URL</label>
+            <input class="form-input" id="f-linkedin_url" type="url" placeholder="https://linkedin.com/in/you">
+          </div>
+          <div class="form-group">
+            <label class="form-label">GitHub URL</label>
+            <input class="form-input" id="f-github_url" type="url" placeholder="https://github.com/you">
+          </div>
+
+          <div class="full-col" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;">
+            <button class="btn btn-primary" id="save-btn" onclick="saveProfile()" style="width:auto;">💾 Save Profile</button>
+            <button class="btn btn-ghost" onclick="loadProfile()" style="width:auto;">Discard Changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOOKUP STUDENT TAB -->
+    <div id="tab-lookup" class="tab-panel">
+      <div class="card">
+        <div class="card-title">🔍 Look Up Any Student</div>
+        <p class="text-muted text-sm" style="margin-bottom:16px;">Search by Student ID, SAP ID, Roll Number, or Email to view profile details.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <input class="form-input" id="lookup-id" type="text" placeholder="Enter Student ID, SAP ID, Roll No or Email"
+            style="flex:1;min-width:220px;" onkeydown="if(event.key==='Enter') lookupStudent()">
+          <button class="btn btn-secondary" onclick="lookupStudent()" style="min-width:100px;">Search</button>
+        </div>
+        <div id="lookup-msg" style="margin-top:14px;"></div>
+        <div id="lookup-result" style="margin-top:18px;"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ========== ADMIN DASHBOARD ========== -->
+<div id="page-admin" class="page" style="display:none;flex-direction:column;min-height:100vh;background:#f5f6fa;">
+  <header class="admin-header">
+    <div class="admin-logo">🛡️ Admin Panel</div>
+    <button class="btn btn-ghost btn-sm" style="color:#fff;border-color:rgba(255,255,255,.3);" onclick="showPage('page-signin')">Exit Admin</button>
+  </header>
+
+  <div class="admin-content">
+    <div class="admin-stats-row">
+      <div class="admin-stat-tile">
+        <div class="admin-stat-tile-num" id="admin-stat-total">—</div>
+        <div class="admin-stat-tile-label">Total Students</div>
+      </div>
+      <div class="admin-stat-tile">
+        <div class="admin-stat-tile-num" id="admin-stat-gpa">—</div>
+        <div class="admin-stat-tile-label">Avg GPA</div>
+      </div>
+      <div class="admin-stat-tile">
+        <div class="admin-stat-tile-num" id="admin-stat-depts">—</div>
+        <div class="admin-stat-tile-label">Departments</div>
+      </div>
+      <div class="admin-stat-tile">
+        <div class="admin-stat-tile-num" id="admin-stat-skills">—</div>
+        <div class="admin-stat-tile-label">Total Skills</div>
+      </div>
+    </div>
+
+    <div class="admin-toolbar">
+      <input class="admin-search" id="admin-search" type="text" placeholder="Search by name, ID or email…" oninput="filterAdminTable()">
+      <select id="admin-dept-filter" class="admin-search" style="flex:0 0 200px;" onchange="filterAdminTable()">
+        <option value="">All Departments</option>
+      </select>
+      <button class="btn btn-primary btn-sm" style="width:auto" onclick="loadAdminData()">🔄 Refresh</button>
+      <button class="btn btn-ghost btn-sm" onclick="exportAdminCSV()">📥 Export CSV</button>
+    </div>
+
+    <div id="admin-load-msg" style="margin-bottom:12px;font-size:13px;color:#5c6070;"></div>
+
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>SAP ID / Roll No</th>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Year</th>
+            <th>GPA</th>
+            <th>Skills</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="admin-table-body">
+          <tr><td colspan="7" class="admin-empty">Loading students…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ========== RESUME OVERLAY ========== -->
+<div id="resume-overlay">
+  <div class="resume-modal">
+    <div class="resume-modal-controls">
+      <span class="resume-modal-title">Resume Preview</span>
+      <div class="resume-modal-btns">
+        <button class="resume-close-btn" onclick="closeResume()">Close</button>
+        <button class="resume-print-btn" onclick="printResume()">Open &amp; Print</button>
+      </div>
+    </div>
+    <div class="resume-body" id="resume-body"></div>
+  </div>
+</div>
+
+<!-- ========== ADMIN MODAL ========== -->
+<div id="admin-modal-overlay">
+  <div class="admin-modal">
+    <div class="admin-modal-header">
+      <div class="admin-modal-title" id="admin-modal-title">Student Profile</div>
+      <button class="admin-modal-close" onclick="closeAdminModal()">✕</button>
+    </div>
+    <div class="admin-modal-body" id="admin-modal-body"></div>
+  </div>
+</div>
+
+<script>
+// ==================== CONFIG ====================
+const CONFIG = {
+  USER_POOL_ID: 'us-east-1_leZWXoWFQ',
+  CLIENT_ID: '32kjql3u9usl57rqhefud590ja',
+  REGION: 'us-east-1',
+  API_URL: 'https://hixpz8z208.execute-api.us-east-1.amazonaws.com/prod/student'
+};
+
+// ==================== STATE ====================
+let currentUser = null;
+let idToken = null;
+let profileData = null;
+let pendingEmail = '';
+let pendingPassword = '';
+let adminAllRows = [];
+
+// ==================== PAGE ROUTING ====================
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(function(p) {
+    p.style.display = 'none';
+    p.classList.remove('active');
+  });
+  var target = document.getElementById(id);
+  if (!target) return;
+  target.classList.add('active');
+  if (id === 'page-app' || id === 'page-admin') {
+    target.style.display = 'flex';
+  } else {
+    target.style.display = 'flex';
+  }
+}
+
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+  var panel = document.getElementById(tabId);
+  if (panel) panel.classList.add('active');
+  var btn = document.querySelector('[data-tab="' + tabId + '"]');
+  if (btn) btn.classList.add('active');
+}
+
+// ==================== HELPERS ====================
+function esc(str) {
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function parseList(val) {
+  if (!val) return [];
+  if (Array.isArray(val)) return val.filter(Boolean);
+  return val.split(/,|\n/).map(function(s){ return s.trim(); }).filter(Boolean);
+}
+function showMsg(id, text, type) {
+  var el = document.getElementById(id);
+  if (el) el.innerHTML = '<div class="msg msg-' + (type||'error') + '">' + text + '</div>';
+}
+function clearMsg(id) {
+  var el = document.getElementById(id);
+  if (el) el.innerHTML = '';
+}
+
+// ==================== COGNITO ====================
+async function cognitoRequest(action, body) {
+  var res = await fetch('https://cognito-idp.' + CONFIG.REGION + '.amazonaws.com/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-amz-json-1.1',
+      'X-Amz-Target': 'AWSCognitoIdentityProviderService.' + action
+    },
+    body: JSON.stringify(body)
+  });
+  var data = await res.json();
+  if (!res.ok) throw data;
+  return data;
+}
+
+// ==================== AUTH ====================
+function showSignIn() {
+  document.getElementById('signup-form').style.display = 'none';
+  document.getElementById('confirm-form').style.display = 'none';
+  document.getElementById('signin-form').style.display = 'block';
+}
+function showSignUp() {
+  document.getElementById('signin-form').style.display = 'none';
+  document.getElementById('confirm-form').style.display = 'none';
+  document.getElementById('signup-form').style.display = 'block';
+}
+
+async function signUp() {
+  clearMsg('signup-msg');
+  var email = document.getElementById('signup-email').value.trim();
+  var password = document.getElementById('signup-password').value;
+  if (!email || !password) return showMsg('signup-msg', 'Please fill in all fields.');
+  try {
+    await cognitoRequest('SignUp', {
+      ClientId: CONFIG.CLIENT_ID, Username: email, Password: password,
+      UserAttributes: [{ Name: 'email', Value: email }]
+    });
+    pendingEmail = email; pendingPassword = password;
+    document.getElementById('signup-form').style.display = 'none';
+    document.getElementById('confirm-form').style.display = 'block';
+    showMsg('confirm-msg', 'Confirmation code sent to your email.', 'info');
+  } catch (e) { showMsg('signup-msg', e.message || 'Sign up failed.'); }
+}
+
+async function confirmSignUp() {
+  clearMsg('confirm-msg');
+  var code = document.getElementById('confirm-code').value.trim();
+  if (!code) return showMsg('confirm-msg', 'Please enter the code.');
+  try {
+    await cognitoRequest('ConfirmSignUp', {
+      ClientId: CONFIG.CLIENT_ID, Username: pendingEmail, ConfirmationCode: code
+    });
+    showMsg('confirm-msg', 'Email confirmed! Signing you in…', 'success');
+    setTimeout(async function() {
+      try {
+        var data = await cognitoRequest('InitiateAuth', {
+          AuthFlow: 'USER_PASSWORD_AUTH', ClientId: CONFIG.CLIENT_ID,
+          AuthParameters: { USERNAME: pendingEmail, PASSWORD: pendingPassword }
+        });
+        onSignedIn(pendingEmail, data.AuthenticationResult.IdToken);
+      } catch (e) { showSignIn(); showMsg('signin-msg', 'Account confirmed. Please sign in.', 'success'); }
+    }, 1000);
+  } catch (e) { showMsg('confirm-msg', e.message || 'Confirmation failed.'); }
+}
+
+async function resendCode() {
+  try {
+    await cognitoRequest('ResendConfirmationCode', { ClientId: CONFIG.CLIENT_ID, Username: pendingEmail });
+    showMsg('confirm-msg', 'Code resent!', 'success');
+  } catch (e) { showMsg('confirm-msg', e.message || 'Could not resend.'); }
+}
+
+async function signIn() {
+  clearMsg('signin-msg');
+  var email = document.getElementById('signin-email').value.trim();
+  var password = document.getElementById('signin-password').value;
+  if (!email || !password) return showMsg('signin-msg', 'Please fill in all fields.');
+  try {
+    var data = await cognitoRequest('InitiateAuth', {
+      AuthFlow: 'USER_PASSWORD_AUTH', ClientId: CONFIG.CLIENT_ID,
+      AuthParameters: { USERNAME: email, PASSWORD: password }
+    });
+    onSignedIn(email, data.AuthenticationResult.IdToken);
+  } catch (e) { showMsg('signin-msg', e.message || 'Sign in failed.'); }
+}
+
+function onSignedIn(email, token) {
+  currentUser = email;
+  idToken = token;
+  // Clear any cached student ID from a previous user's session
+  sessionStorage.removeItem('ss_last_student_id');
+  profileData = null;
+  showPage('page-app');
+  document.getElementById('header-username').textContent = email;
+  document.getElementById('header-avatar').textContent = email.charAt(0).toUpperCase();
+  // Clear the edit form so it doesn't show previous user's data
+  var fields = ['sap_id','roll_number','full_name','email','department',
+                'year_of_study','gpa','skills','certifications','projects','career_goal',
+                'linkedin_url','github_url'];
+  fields.forEach(function(f) {
+    var el = document.getElementById('f-' + f);
+    if (el) el.value = '';
+  });
+  loadProfile();
+}
+
+function signOut() {
+  currentUser = null; idToken = null; profileData = null;
+  sessionStorage.removeItem('ss_last_student_id');
+  showPage('page-signin'); showSignIn();
+}
+
+// ==================== API ====================
+async function apiCall(method, body, studentId) {
+  var url;
+  if (!studentId) {
+    url = CONFIG.API_URL;
+  } else if (studentId.indexOf('@') !== -1) {
+    // Email address — use dedicated email lookup endpoint
+    url = CONFIG.API_URL + '?email=' + encodeURIComponent(studentId);
+  } else {
+    url = CONFIG.API_URL + '?student_id=' + encodeURIComponent(studentId);
+  }
+  var opts = {
+    method: method,
+    headers: { 'Authorization': idToken || '', 'Content-Type': 'application/json' }
+  };
+  if (body) opts.body = JSON.stringify(body);
+  var res = await fetch(url, opts);
+  var data = await res.json();
+  if (!res.ok) {
+    // Attach status code so callers can distinguish 404 from 500
+    var err = new Error(data.message || ('HTTP ' + res.status));
+    err.statusCode = res.status;
+    err.data = data;
+    throw err;
+  }
+  return data;
+}
+
+// ==================== PROFILE SAVE ====================
+async function saveProfile() {
+  clearMsg('edit-msg');
+  var btn = document.getElementById('save-btn');
+  var payload = {
+    student_id:    document.getElementById('f-student_id').value.trim(),
+    sap_id:        document.getElementById('f-sap_id').value.trim(),
+    roll_number:   document.getElementById('f-roll_number').value.trim(),
+    full_name:     document.getElementById('f-full_name').value.trim(),
+    email:         document.getElementById('f-email').value.trim(),
+    department:    document.getElementById('f-department').value.trim(),
+    year_of_study: document.getElementById('f-year_of_study').value,
+    gpa:           document.getElementById('f-gpa').value,
+    skills:        document.getElementById('f-skills').value.trim(),
+    certifications:document.getElementById('f-certifications').value.trim(),
+    projects:      document.getElementById('f-projects').value.trim(),
+    career_goal:   document.getElementById('f-career_goal').value.trim(),
+    linkedin_url:  document.getElementById('f-linkedin_url').value.trim(),
+    github_url:    document.getElementById('f-github_url').value.trim()
+  };
+
+  // SAP ID is the primary key — mirror it into student_id
+  if (!payload.sap_id) {
+    return showMsg('edit-msg', '⚠️ Please fill in your SAP ID (required).', 'error');
+  }
+  payload.student_id = payload.sap_id;
+
+  if (!payload.full_name || !payload.email || !payload.department) {
+    return showMsg('edit-msg', '⚠️ Please fill in all required fields (SAP ID, Full Name, Email, Department).', 'error');
+  }
+
+  btn.textContent = 'Saving…'; btn.disabled = true;
+  try {
+    var result = await apiCall('POST', payload);
+    profileData = payload;
+    sessionStorage.setItem('ss_last_student_id', payload.sap_id || payload.student_id);
+    showMsg('edit-msg', '✅ Profile saved successfully for ' + payload.full_name + '!', 'success');
+    setTimeout(function() { switchTab('tab-profile'); loadProfile(payload.student_id); }, 800);
+  } catch (e) {
+    showMsg('edit-msg', '❌ ' + (e.message || e.error || 'Save failed.'), 'error');
+  }
+  btn.textContent = '💾 Save Profile'; btn.disabled = false;
+}
+
+// ==================== PROFILE LOAD ====================
+async function loadProfile(studentIdOverride) {
+  // Try in order: override → cached SAP ID → email (always available after login)
+  var studentId = studentIdOverride
+    || (profileData && profileData.student_id)
+    || sessionStorage.getItem('ss_last_student_id');
+  // Only fall back to email if nothing else — avoids repeated failed scans
+  if (!studentId && currentUser) studentId = currentUser;
+
+  if (!studentId) {
+    document.getElementById('profile-display').innerHTML =
+      '<div class="card"><div class="empty-state">' +
+      '<div class="empty-state-icon">📋</div>' +
+      '<div class="empty-state-text">No profile yet. Go to <strong>Edit Profile</strong> to create yours.</div>' +
+      '<button class="btn btn-primary" style="margin-top:14px;width:auto;" onclick="switchTab(\'tab-edit\')">Create My Profile</button>' +
+      '</div></div>';
+    return;
+  }
+
+  sessionStorage.setItem('ss_last_student_id', studentId);
+  document.getElementById('profile-display').innerHTML =
+    '<div class="card"><div class="empty-state"><span class="spinner"></span>' +
+    '<div class="empty-state-text mt-8">Loading profile…</div></div></div>';
+
+  try {
+    var result = await apiCall('GET', null, studentId);
+    if (result && result.success && result.data) {
+      profileData = result.data;
+      // Cache the real student_id (SAP ID) so next load is a fast direct lookup
+      sessionStorage.setItem('ss_last_student_id', profileData.student_id || profileData.sap_id || studentId);
+      renderProfile(profileData, 'profile-display', false);
+      prefillEditForm(profileData);
+    } else {
+      // Not found — could mean profile doesn't exist yet (especially on first login)
+      sessionStorage.removeItem('ss_last_student_id');
+      document.getElementById('profile-display').innerHTML =
+        '<div class="card"><div class="empty-state">' +
+        '<div class="empty-state-icon">📋</div>' +
+        '<div class="empty-state-text">No profile yet. Go to <strong>Edit Profile</strong> to create yours.</div>' +
+        '<button class="btn btn-primary" style="margin-top:14px;width:auto;" onclick="switchTab(\'tab-edit\')">Create My Profile</button>' +
+        '</div></div>';
+      // Pre-fill email from login so student doesn't have to retype it
+      var emailEl = document.getElementById('f-email');
+      if (emailEl && currentUser) emailEl.value = currentUser;
+    }
+  } catch (e) {
+    // 404 = profile doesn't exist yet — show create prompt, not an error
+    if (e.statusCode === 404 || (e.message && e.message.includes('No student found'))) {
+      sessionStorage.removeItem('ss_last_student_id');
+      document.getElementById('profile-display').innerHTML =
+        '<div class="card"><div class="empty-state">' +
+        '<div class="empty-state-icon">📋</div>' +
+        '<div class="empty-state-text">No profile yet. Go to <strong>Edit Profile</strong> to create yours.</div>' +
+        '<button class="btn btn-primary" style="margin-top:14px;width:auto;" onclick="switchTab(\'tab-edit\')">Create My Profile</button>' +
+        '</div></div>';
+      var emailEl = document.getElementById('f-email');
+      if (emailEl && currentUser) emailEl.value = currentUser;
+    } else {
+      document.getElementById('profile-display').innerHTML =
+        '<div class="card"><div class="msg msg-error">⚠️ ' + esc(e.message || 'Network error') + '</div></div>';
+    }
+  }
+}
+
+// ==================== LOOKUP ====================
+async function lookupStudent() {
+  var studentId = document.getElementById('lookup-id').value.trim();
+  if (!studentId) return showMsg('lookup-msg', 'Please enter a Student ID.', 'error');
+  document.getElementById('lookup-result').innerHTML = '';
+  showMsg('lookup-msg', 'Searching…', 'info');
+  try {
+    var result = await apiCall('GET', null, studentId);
+    document.getElementById('lookup-msg').innerHTML = '';
+    if (result && result.success && result.data) {
+      renderProfile(result.data, 'lookup-result', true);
+    } else {
+      showMsg('lookup-msg', (result && result.message) || 'Student not found.', 'error');
+    }
+  } catch (e) {
+    showMsg('lookup-msg', 'Error: ' + (e.message || 'Unable to search.'), 'error');
+  }
+}
+
+// ==================== RENDER PROFILE ====================
+function calcCareerScore(d) {
+  var gpa = parseFloat(d.gpa) || 0;
+  var skills = parseList(d.skills);
+  var certs = parseList(d.certifications);
+  var projects = parseList(d.projects);
+  var ln = (d.linkedin_url && d.linkedin_url.trim()) ? 5 : 0;
+  var gh = (d.github_url && d.github_url.trim()) ? 5 : 0;
+  return Math.round(
+    (Math.min(gpa, 4.0) / 4.0) * 30 +
+    Math.min(skills.length * 5, 25) +
+    Math.min(certs.length * 10, 20) +
+    Math.min(projects.length * 5, 15) +
+    ln + gh
+  );
+}
+function scoreColor(s) {
+  return s >= 70 ? '#22c55e' : s >= 40 ? '#f59e0b' : '#ef4444';
+}
+function getAcademicBadge(gpa) {
+  var g = parseFloat(gpa) || 0;
+  if (g >= 3.5) return { label: '🏆 Distinction', cls: 'badge-distinction' };
+  if (g >= 3.0) return { label: '⭐ Merit', cls: 'badge-merit' };
+  if (g >= 2.5) return { label: '✅ Pass', cls: 'badge-pass' };
+  return { label: '📚 Needs Improvement', cls: 'badge-needs' };
+}
+
+function renderProfile(d, containerId, lookupMode) {
+  d = d || {};
+  var name = d.full_name || 'Student';
+  var initials = name.split(/\s+/).slice(0,2).map(function(x){ return x.charAt(0); }).join('').toUpperCase() || '?';
+  var gpa = parseFloat(d.gpa);
+  var skills = parseList(d.skills);
+  var certs = parseList(d.certifications);
+  var projects = parseList(d.projects);
+  var score = calcCareerScore(d);
+  var badge = getAcademicBadge(d.gpa);
+  var color = scoreColor(score);
+
+  // Profile completion
+  var completionFields = ['student_id','sap_id','roll_number','full_name','email','department','year_of_study','gpa','skills','certifications','projects','linkedin_url','github_url'];
+  var filled = completionFields.filter(function(f){ return d[f] && String(d[f]).trim(); }).length;
+  var pct = Math.round((filled / completionFields.length) * 100);
+
+  var links = '';
+  if (d.linkedin_url) links += '<a class="profile-link-btn" href="' + esc(d.linkedin_url) + '" target="_blank" rel="noopener">🔗 LinkedIn</a> ';
+  if (d.github_url) links += '<a class="profile-link-btn" href="' + esc(d.github_url) + '" target="_blank" rel="noopener">🐙 GitHub</a>';
+
+  var stats = '';
+  if (!lookupMode) {
+    var circumference = 2 * Math.PI * 54;
+    var offset = circumference - (score / 100) * circumference;
+    stats =
+      '<div class="stats-row" style="grid-template-columns:repeat(3,1fr);">' +
+        '<div class="stat-tile"><div class="stat-tile-num" style="color:' + color + '">' + score + '</div><div class="stat-tile-label">Career Score</div></div>' +
+        '<div class="stat-tile"><div class="stat-tile-num">' + skills.length + '</div><div class="stat-tile-label">Skills</div></div>' +
+        '<div class="stat-tile"><div class="stat-tile-num">' + pct + '%</div><div class="stat-tile-label">Profile Complete</div></div>' +
+      '</div>' +
+      '<div class="completion-bar-wrap">' +
+        '<div class="completion-bar-header"><span class="completion-bar-label">Profile Completion</span><span class="completion-bar-pct">' + pct + '%</span></div>' +
+        '<div class="completion-bar-track"><div class="completion-bar-fill" style="width:' + pct + '%"></div></div>' +
+      '</div>';
+  }
+
+  var academicInfo = [
+    ['Student ID', d.student_id],
+    ['SAP ID', d.sap_id],
+    ['Roll Number', d.roll_number],
+    ['Email', lookupMode ? null : d.email],
+    ['Department', d.department],
+    ['Year of Study', d.year_of_study],
+    ['GPA', isNaN(gpa) ? null : gpa.toFixed(2)],
+    ['Career Goal', d.career_goal]
+  ].filter(function(r){ return r[1]; });
+
+  var html = stats +
+    '<div class="profile-grid">' +
+      '<div class="profile-sidebar">' +
+        '<div class="profile-hero">' +
+          '<div class="profile-avatar-lg">' + esc(initials) + '</div>' +
+          '<div class="profile-name">' + esc(name) + '</div>' +
+          '<div class="profile-major">' + esc(d.department || '') + '</div>' +
+          '<div class="profile-gpa-row"><div><div class="gpa-num">' + (isNaN(gpa) ? '—' : gpa.toFixed(2)) + '</div><div class="gpa-label">GPA</div></div></div>' +
+          '<div style="margin-bottom:12px;"><span class="academic-badge ' + badge.cls + '">' + badge.label + '</span></div>' +
+          '<div class="profile-links">' + (links || '<span class="text-muted text-sm">No links added</span>') + '</div>' +
+          (lookupMode ? '' : '<div style="margin-top:14px;"><button class="download-resume-btn" onclick="openResume()">📄 Download Resume</button></div>') +
+        '</div>';
+
+  if (!lookupMode) {
+    // Career score ring
+    var circumference = 2 * Math.PI * 54;
+    var offset = circumference - (score / 100) * circumference;
+    var gpaC = Math.round((Math.min(parseFloat(d.gpa)||0, 4.0) / 4.0) * 30);
+    var skC = Math.min(skills.length * 5, 25);
+    var ceC = Math.min(certs.length * 10, 20);
+    var prC = Math.min(projects.length * 5, 15);
+    var lnC = (d.linkedin_url && d.linkedin_url.trim()) ? 5 : 0;
+    var ghC = (d.github_url && d.github_url.trim()) ? 5 : 0;
+    html +=
+      '<div class="card">' +
+        '<div class="card-title">Career Readiness</div>' +
+        '<div class="career-score-wrap">' +
+          '<div class="ring-container">' +
+            '<svg class="ring-svg" width="140" height="140" viewBox="0 0 140 140">' +
+              '<circle class="ring-track" cx="70" cy="70" r="54"/>' +
+              '<circle class="ring-fill" cx="70" cy="70" r="54" stroke="' + color + '" stroke-dasharray="' + circumference.toFixed(2) + '" stroke-dashoffset="' + offset.toFixed(2) + '"/>' +
+            '</svg>' +
+            '<div class="ring-center"><div class="ring-score-num" style="color:' + color + '">' + score + '</div><div class="ring-score-label">Career Ready</div></div>' +
+          '</div>' +
+        '</div>' +
+        '<div style="font-size:12px;color:var(--fg-muted)">' +
+        [['GPA',gpaC,30],['Skills',skC,25],['Certs',ceC,20],['Projects',prC,15],['LinkedIn',lnC,5],['GitHub',ghC,5]].map(function(r){
+          return '<div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid var(--border)">' +
+            '<span>' + r[0] + '</span><span style="font-weight:600;color:' + (r[1]===r[2]?'var(--success)':'var(--fg)') + '">' + r[1] + '/' + r[2] + '</span></div>';
+        }).join('') +
+        '</div>' +
+      '</div>';
+  }
+
+  html += '</div>' + // close sidebar
+    '<div>' +
+      '<div class="card"><div class="card-title">📋 Academic Information</div><div class="field-list">' +
+        academicInfo.map(function(r){
+          return '<div class="field-row"><div class="field-key">' + esc(r[0]) + '</div><div class="field-val">' + esc(r[1]) + '</div></div>';
+        }).join('') +
+      '</div></div>' +
+      '<div class="card"><div class="card-title">💻 Skills &amp; Expertise</div>' +
+        (skills.length ? '<div class="tag-list">' + skills.map(function(s){ return '<span class="tag">' + esc(s) + '</span>'; }).join('') + '</div>' : '<span class="text-muted">None listed</span>') +
+      '</div>' +
+      '<div class="card"><div class="card-title">🏅 Certifications</div>' +
+        (certs.length ? '<div class="tag-list">' + certs.map(function(c){ return '<span class="tag">' + esc(c) + '</span>'; }).join('') + '</div>' : '<span class="text-muted">None listed</span>') +
+      '</div>' +
+      '<div class="card"><div class="card-title">🚀 Projects</div>' +
+        (projects.length ? '<div class="tag-list">' + projects.map(function(p){ return '<span class="tag">' + esc(p) + '</span>'; }).join('') + '</div>' : '<span class="text-muted">None listed</span>') +
+      '</div>' +
+      (lookupMode ? '' : '<div style="display:flex;justify-content:flex-end;margin-top:4px;"><button class="btn btn-secondary" onclick="switchTab(\'tab-edit\')">✏️ Edit Profile</button></div>') +
+    '</div>' +
+  '</div>';
+
+  document.getElementById(containerId).innerHTML = html;
+}
+
+// ==================== PREFILL EDIT FORM ====================
+function prefillEditForm(d) {
+  var fields = ['sap_id','roll_number','full_name','email','department',
+                'year_of_study','gpa','skills','certifications','projects','career_goal',
+                'linkedin_url','github_url'];
+  fields.forEach(function(f) {
+    var el = document.getElementById('f-' + f);
+    if (el && d[f] !== undefined && d[f] !== null) el.value = d[f];
+  });
+  // Keep hidden student_id in sync with sap_id
+  var hiddenId = document.getElementById('f-student_id');
+  if (hiddenId) hiddenId.value = d.student_id || d.sap_id || '';
+  // If sap_id is missing but student_id exists, show it in the sap_id field
+  var sapEl = document.getElementById('f-sap_id');
+  if (sapEl && !d.sap_id && d.student_id) sapEl.value = d.student_id;
+}
+
+// ==================== RESUME ====================
+function openResume() {
+  var d = profileData || {};
+  var skills = parseList(d.skills);
+  var certs = parseList(d.certifications);
+  var projects = parseList(d.projects);
+  var gpa = parseFloat(d.gpa);
+  var score = calcCareerScore(d);
+  var badge = getAcademicBadge(d.gpa);
+  var contactParts = [d.email, d.sap_id ? 'SAP: ' + d.sap_id : '', d.roll_number ? 'Roll: ' + d.roll_number : ''].filter(Boolean);
+
+  var html = '<div class="res-name">' + esc(d.full_name || 'Student Name') + '</div>' +
+    '<div class="res-contact">' + contactParts.join(' &middot; ') + '</div>';
+  if (d.linkedin_url || d.github_url) {
+    html += '<div class="res-contact" style="margin-top:2px">' +
+      (d.linkedin_url ? 'LinkedIn: ' + d.linkedin_url : '') +
+      (d.linkedin_url && d.github_url ? ' &middot; ' : '') +
+      (d.github_url ? 'GitHub: ' + d.github_url : '') + '</div>';
+  }
+  html += '<hr class="res-divider">';
+  html += '<div class="res-section"><div class="res-section-title">Education</div>' +
+    '<div class="res-row">' +
+      '<div><div class="res-label">' + esc(d.department || 'Department') + '</div>' +
+      '<div class="res-val">' + esc(d.year_of_study || '') + '</div></div>' +
+      '<div style="text-align:right">' + (gpa ? '<div class="res-val">GPA: ' + gpa.toFixed(2) + ' — <strong>' + badge.label + '</strong></div>' : '') + '</div>' +
+    '</div></div>';
+  if (skills.length) html += '<div class="res-section"><div class="res-section-title">Technical Skills</div><div class="res-tag-list">' + skills.map(function(s){ return '<span class="res-tag">' + esc(s) + '</span>'; }).join('') + '</div></div>';
+  if (certs.length) html += '<div class="res-section"><div class="res-section-title">Certifications</div>' + certs.map(function(c){ return '<div class="res-item"><div class="res-item-name">' + esc(c) + '</div></div>'; }).join('') + '</div>';
+  if (projects.length) html += '<div class="res-section"><div class="res-section-title">Projects</div>' + projects.map(function(p){ return '<div class="res-item"><div class="res-item-name">' + esc(p) + '</div></div>'; }).join('') + '</div>';
+  if (d.career_goal) html += '<div class="res-section"><div class="res-section-title">Career Goal</div><div style="font-size:13px;">' + esc(d.career_goal) + '</div></div>';
+  html += '<div style="margin-top:18px;padding-top:12px;border-top:1px solid #e0e2ea;font-size:11px;color:#999;display:flex;justify-content:space-between">' +
+    '<span>Career Readiness Score: <strong style="color:#4361ee">' + score + '/100</strong></span><span>Generated via StudentSphere</span></div>';
+
+  document.getElementById('resume-body').innerHTML = html;
+  document.getElementById('resume-overlay').classList.add('open');
+}
+function closeResume() { document.getElementById('resume-overlay').classList.remove('open'); }
+function printResume() {
+  var bodyHtml = document.getElementById('resume-body').innerHTML;
+  var name = (profileData && profileData.full_name) ? profileData.full_name : 'Resume';
+  var win = window.open('', '_blank', 'width=800,height=900');
+  if (!win) { alert('Allow popups to open the print window.'); return; }
+  win.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + name + '</title>' +
+    '<style>body{font-family:system-ui,sans-serif;max-width:680px;margin:40px auto;padding:0 32px;color:#111}' +
+    '.res-name{font-size:26px;font-weight:800}.res-contact{font-size:13px;color:#555;margin-top:4px}' +
+    '.res-divider{border:none;border-top:2px solid #4361ee;margin:14px 0 18px}' +
+    '.res-section-title{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#4361ee;margin-bottom:10px}' +
+    '.res-section{margin-bottom:22px}.res-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}' +
+    '.res-label{font-size:13px;font-weight:700;color:#222}.res-val{font-size:13px;color:#444}' +
+    '.res-tag-list{display:flex;flex-wrap:wrap;gap:5px}.res-tag{padding:2px 9px;background:#eef1fd;color:#4361ee;border-radius:12px;font-size:12px;font-weight:600}' +
+    '.res-item{margin-bottom:8px}.res-item-name{font-size:13px;font-weight:700;color:#222}' +
+    '</style></head><body>' + bodyHtml + '</body></html>');
+  win.document.close(); win.focus();
+  setTimeout(function(){ win.print(); }, 500);
+}
+
+// ==================== ADMIN LOGIN ====================
+function adminLogin() {
+  var pwd = document.getElementById('admin-password').value;
+  if (pwd === 'Admin@SS2024') {
+    document.getElementById('admin-password').value = '';
+    showPage('page-admin');
+    loadAdminData();
+  } else {
+    showMsg('admin-login-msg', '❌ Incorrect admin password.', 'error');
+  }
+}
+
+// ==================== ADMIN DATA ====================
+async function loadAdminData() {
+  document.getElementById('admin-load-msg').textContent = '⏳ Loading students from DynamoDB…';
+  document.getElementById('admin-table-body').innerHTML = '<tr><td colspan="8" class="admin-empty"><span class="spinner"></span></td></tr>';
+  try {
+    var res = await fetch(CONFIG.API_URL + '?admin=true', {
+      headers: { 'Content-Type': 'application/json' }
+    });
+    var data = await res.json();
+    var students = [];
+    if (data && Array.isArray(data.students)) students = data.students;
+    else if (Array.isArray(data)) students = data;
+
+    if (!res.ok || !data.success) throw new Error(data.message || 'API error ' + res.status);
+
+    adminAllRows = students;
+    document.getElementById('admin-load-msg').textContent = '✅ Loaded ' + students.length + ' student(s) from DynamoDB.';
+    populateDeptFilter(students);
+    renderAdminTable(students);
+    updateAdminStats(students);
+  } catch (e) {
+    document.getElementById('admin-load-msg').innerHTML = '❌ Error: ' + esc(e.message || 'Could not load students. Check Lambda IAM has dynamodb:Scan permission.');
+    document.getElementById('admin-table-body').innerHTML = '<tr><td colspan="7" class="admin-empty">Failed to load. Check IAM permissions.</td></tr>';
+  }
+}
+
+function updateAdminStats(students) {
+  document.getElementById('admin-stat-total').textContent = students.length;
+  var gpas = students.map(function(s){ return parseFloat(s.gpa); }).filter(function(g){ return !isNaN(g) && g > 0; });
+  document.getElementById('admin-stat-gpa').textContent = gpas.length ? (gpas.reduce(function(a,b){return a+b;},0)/gpas.length).toFixed(2) : '—';
+  var depts = new Set(students.map(function(s){ return s.department||''; }).filter(Boolean));
+  document.getElementById('admin-stat-depts').textContent = depts.size;
+  document.getElementById('admin-stat-skills').textContent = students.reduce(function(acc,s){ return acc + parseList(s.skills).length; }, 0);
+}
+
+function renderAdminTable(students) {
+  var tbody = document.getElementById('admin-table-body');
+  if (!students || students.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" class="admin-empty">No student records found.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = students.map(function(s) {
+    // Always use the real index in adminAllRows so edit/delete work after search filter
+    var realIdx = adminAllRows.indexOf(s);
+    var skills = parseList(s.skills);
+    var gpa = parseFloat(s.gpa);
+    // Show SAP ID as primary identity (student_id == sap_id in new setup)
+    var sapDisplay = s.sap_id || s.student_id || '—';
+    return '<tr>' +
+      '<td style="font-family:monospace;font-size:12px;">' + esc(sapDisplay) + '<br><span style="color:#9098b0;">' + esc(s.roll_number || '') + '</span></td>' +
+      '<td style="font-weight:600;">' + esc(s.full_name || '—') + '</td>' +
+      '<td>' + esc(s.department || '—') + '</td>' +
+      '<td>' + esc(s.year_of_study || '—') + '</td>' +
+      '<td>' + (isNaN(gpa) ? '—' : gpa.toFixed(2)) + '</td>' +
+      '<td>' + skills.length + ' skill' + (skills.length !== 1 ? 's' : '') + '</td>' +
+      '<td>' +
+        '<button class="admin-action-btn btn-view" onclick="viewAdminStudent(' + realIdx + ')">👁️ View</button>' +
+        '<button class="admin-action-btn btn-edit-admin" onclick="editAdminStudent(' + realIdx + ')">✏️ Edit</button>' +
+        '<button class="admin-action-btn btn-del" onclick="deleteAdminStudent(' + realIdx + ')">🗑️ Delete</button>' +
+      '</td></tr>';
+  }).join('');
+}
+
+function filterAdminTable() {
+  var q = document.getElementById('admin-search').value.trim().toLowerCase();
+  var dept = document.getElementById('admin-dept-filter').value;
+  var filtered = adminAllRows.filter(function(s) {
+    var matchQ = !q ||
+      (s.full_name || '').toLowerCase().includes(q) ||
+      (s.email || '').toLowerCase().includes(q) ||
+      (s.student_id || '').toLowerCase().includes(q) ||
+      (s.sap_id || '').toLowerCase().includes(q) ||
+      (s.roll_number || '').toLowerCase().includes(q);
+    var matchDept = !dept || (s.department || '') === dept;
+    return matchQ && matchDept;
+  });
+  renderAdminTable(filtered);
+}
+
+function populateDeptFilter(students) {
+  var sel = document.getElementById('admin-dept-filter');
+  var depts = [...new Set(students.map(function(s){ return s.department || ''; }).filter(Boolean))].sort();
+  sel.innerHTML = '<option value="">All Departments</option>' +
+    depts.map(function(d){ return '<option value="' + esc(d) + '">' + esc(d) + '</option>'; }).join('');
+}
+
+function viewAdminStudent(idx) {
+  var s = adminAllRows[idx];
+  if (!s) return;
+  var skills = parseList(s.skills);
+  var certs = parseList(s.certifications);
+  var projects = parseList(s.projects);
+  var gpa = parseFloat(s.gpa) || 0;
+  var score = calcCareerScore(s);
+  var badge = getAcademicBadge(gpa);
+  var color = scoreColor(score);
+
+  document.getElementById('admin-modal-title').textContent = s.full_name || 'Student Profile';
+  document.getElementById('admin-modal-body').innerHTML =
+    '<div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">' +
+      '<div style="width:56px;height:56px;border-radius:50%;background:#4361ee;color:#fff;font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center;">' +
+        esc((s.full_name||'?').charAt(0).toUpperCase()) +
+      '</div>' +
+      '<div>' +
+        '<div style="font-size:17px;font-weight:700;">' + esc(s.full_name||'—') + '</div>' +
+        '<div style="font-size:13px;color:#5c6070;">' + esc(s.email||'') + '</div>' +
+        (s.sap_id ? '<div style="font-size:12px;color:#9098b0;">SAP: ' + esc(s.sap_id) + (s.roll_number ? ' · Roll: ' + esc(s.roll_number) : '') + '</div>' : '') +
+      '</div>' +
+      '<div style="margin-left:auto;text-align:right;">' +
+        '<span class="academic-badge ' + badge.cls + '">' + badge.label + '</span><br>' +
+        '<span style="font-size:13px;font-weight:700;color:' + color + '">Score: ' + score + '/100</span>' +
+      '</div>' +
+    '</div>' +
+    '<div style="display:grid;grid-template-columns:130px 1fr;gap:0;">' +
+      [['Student ID', s.student_id], ['Department', s.department], ['Year', s.year_of_study], ['GPA', gpa ? gpa.toFixed(2) : ''], ['Career Goal', s.career_goal]]
+        .filter(function(r){ return r[1]; })
+        .map(function(r){ return '<div style="padding:8px 0;border-bottom:1px solid #f0f1f5;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:#9098b0;">' + r[0] + '</div><div style="padding:8px 0;border-bottom:1px solid #f0f1f5;font-size:14px;">' + esc(r[1]) + '</div>'; }).join('') +
+    '</div>' +
+    (skills.length ? '<div style="margin-top:14px;"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#9098b0;margin-bottom:6px;">Skills</div><div class="tag-list">' + skills.map(function(s){ return '<span class="tag">' + esc(s) + '</span>'; }).join('') + '</div></div>' : '') +
+    (certs.length ? '<div style="margin-top:12px;"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#9098b0;margin-bottom:6px;">Certifications</div><div class="tag-list">' + certs.map(function(c){ return '<span class="tag">' + esc(c) + '</span>'; }).join('') + '</div></div>' : '') +
+    (projects.length ? '<div style="margin-top:12px;"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#9098b0;margin-bottom:6px;">Projects</div><div class="tag-list">' + projects.map(function(p){ return '<span class="tag">' + esc(p) + '</span>'; }).join('') + '</div></div>' : '');
+
+  document.getElementById('admin-modal-overlay').classList.add('open');
+}
+
+function closeAdminModal() {
+  document.getElementById('admin-modal-overlay').classList.remove('open');
+}
+
+function editAdminStudent(idx) {
+  var s = adminAllRows[idx];
+  if (!s) return;
+  document.getElementById('admin-modal-title').textContent = '✏️ Edit: ' + (s.full_name || s.student_id);
+  document.getElementById('admin-modal-body').innerHTML =
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">' +
+    ['student_id','sap_id','roll_number','full_name','email','department','year_of_study','gpa','skills','certifications','projects','career_goal','linkedin_url','github_url']
+      .map(function(k) {
+        var label = k.replace(/_/g,' ').replace(/\b\w/g,function(c){return c.toUpperCase();});
+        var isWide = ['skills','certifications','projects','career_goal'].includes(k);
+        return '<div style="' + (isWide ? 'grid-column:1/-1;' : '') + '">' +
+          '<label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#9098b0;display:block;margin-bottom:4px;">' + label + '</label>' +
+          '<input id="admin-edit-' + k + '" value="' + esc(s[k] || '') + '" style="width:100%;padding:8px 12px;border:1.5px solid #e2e5ee;border-radius:8px;font-size:13px;outline:none;" />' +
+          '</div>';
+      }).join('') +
+    '</div>' +
+    '<div style="margin-top:16px;display:flex;gap:10px;">' +
+      '<button class="btn btn-primary btn-sm" style="width:auto" onclick="saveAdminEdit(' + idx + ')">💾 Save Changes</button>' +
+      '<button class="btn btn-ghost btn-sm" onclick="closeAdminModal()">Cancel</button>' +
+    '</div>' +
+    '<div id="admin-edit-msg" style="margin-top:10px;"></div>';
+  document.getElementById('admin-modal-overlay').classList.add('open');
+}
+
+async function saveAdminEdit(idx) {
+  var s = adminAllRows[idx];
+  if (!s) return;
+  var keys = ['student_id','sap_id','roll_number','full_name','email','department','year_of_study','gpa','skills','certifications','projects','career_goal','linkedin_url','github_url'];
+  var payload = {};
+  keys.forEach(function(k) {
+    var el = document.getElementById('admin-edit-' + k);
+    if (el) payload[k] = el.value.trim();
+  });
+  try {
+    var res = await fetch(CONFIG.API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    Object.assign(adminAllRows[idx], payload);
+    renderAdminTable(adminAllRows);
+    updateAdminStats(adminAllRows);
+    showMsg('admin-edit-msg', '✅ Student updated successfully!', 'success');
+    setTimeout(closeAdminModal, 1200);
+  } catch(e) {
+    showMsg('admin-edit-msg', '❌ Save failed: ' + (e.message || 'Error'), 'error');
+  }
+}
+
+async function deleteAdminStudent(idx) {
+  var s = adminAllRows[idx];
+  if (!s) return;
+  var name = s.full_name || s.student_id || 'this student';
+  if (!confirm('Delete profile for ' + name + '? This cannot be undone.')) return;
+  try {
+    // Use POST with _action=delete to avoid needing DELETE method in API Gateway
+    var res = await fetch(CONFIG.API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ _action: 'delete', student_id: s.student_id || '' })
+    });
+    var data = await res.json();
+    if (!res.ok && !data.success) throw new Error(data.message || 'Delete failed');
+    adminAllRows.splice(idx, 1);
+    renderAdminTable(adminAllRows);
+    updateAdminStats(adminAllRows);
+    document.getElementById('admin-load-msg').textContent = '🗑️ Deleted ' + name + '. ' + adminAllRows.length + ' student(s) remaining.';
+  } catch (e) {
+    alert('Delete failed: ' + (e.message || 'Unknown error'));
+  }
+}
+
+function exportAdminCSV() {
+  if (!adminAllRows || adminAllRows.length === 0) { alert('No data to export.'); return; }
+  var headers = ['Student ID','SAP ID','Roll Number','Full Name','Email','Department','Year','GPA','Skills','Certifications','Projects','Career Goal','LinkedIn','GitHub'];
+  var rows = adminAllRows.map(function(s) {
+    return [s.student_id,s.sap_id,s.roll_number,s.full_name,s.email,s.department,s.year_of_study,s.gpa,
+            parseList(s.skills).join('; '),parseList(s.certifications).join('; '),parseList(s.projects).join('; '),
+            s.career_goal,s.linkedin_url,s.github_url]
+      .map(function(v){ return '"' + String(v||'').replace(/"/g,'""') + '"'; }).join(',');
+  });
+  var csv = [headers.join(',')].concat(rows).join('\n');
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'}));
+  a.download = 'students_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+}
+
+// ==================== ADMIN MODAL CLOSE ON OVERLAY CLICK ====================
+document.getElementById('admin-modal-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeAdminModal();
+});
+</script>
+</body>
+</html>
